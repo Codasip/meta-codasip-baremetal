@@ -7,6 +7,9 @@ SDK_VERSION = "R1.0"
 TCLIBC = "newlib"
 TCLIBCAPPEND =""
 
+SDK_NAME = "${DISTRO}-${TCLIBC}-${SDKMACHINE}-${IMAGE_BASENAME}-${TUNE_PKGARCH}-${MACHINE}"
+SDKPATHINSTALL = "/opt/${DISTRO}/${SDK_VERSION}"
+
 # Build with clang where possible
 TOOLCHAIN = "clang"
 
