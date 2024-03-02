@@ -15,6 +15,21 @@ The software in this layer may be used in either a standard single
 configuration build, or a multiconfig build.  A multiconfig build is
 needed to build the FSBL firmware automatically.
 
+## multiconfig setup
+
+To automatically build the FSBL with a Linux build, you need
+to add the following to your conf/local.conf file.  This will use
+the multiconfig mechanism within the Yocto Project to build the corresponding
+standalone firmware on demand.
+
+Edit the conf/local.conf file, add:
+
+```
+BBMULTICONFIG += "baremetal"
+```
+
+---
+
 ## Dependencies
 
 This layer depends on:
