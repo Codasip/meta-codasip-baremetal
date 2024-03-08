@@ -1,0 +1,41 @@
+From xxx Tue Mar  5 12:56:03 2024
+From: Stuart Menefy <stuart.menefy@codasip.com>
+Date: Tue,  5 Mar 2024 12:56:03 -0000
+Subject: [PATCH] clang: Remove nostdsysteminc for baremetal
+
+The baremetal build places the newlib header files in the correct place,
+so fixup the paths to match and remove -nostdsysteminc from the command line.
+
+diff --git a/clang/lib/Driver/ToolChains/BareMetal.cpp b/clang/lib/Driver/ToolChains/BareMetal.cpp
+index 26a6276ae50a..8df15721c76a 100644
+--- a/clang/lib/Driver/ToolChains/BareMetal.cpp.orig
++++ b/clang/lib/Driver/ToolChains/BareMetal.cpp
+@@ -109,7 +109,7 @@ BareMetal::BareMetal(const Driver &D, const llvm::Triple &Triple,
+   if (!SysRoot.empty()) {
+     for (const Multilib &M : getOrderedMultilibs()) {
+       SmallString<128> Dir(SysRoot);
+-      llvm::sys::path::append(Dir, M.osSuffix(), "lib");
++      llvm::sys::path::append(Dir, M.osSuffix(), "usr/lib");
+       getFilePaths().push_back(std::string(Dir));
+       getLibraryPaths().push_back(std::string(Dir));
+     }
+@@ -278,7 +278,7 @@ void BareMetal::AddClangSystemIncludeArgs(const ArgList &DriverArgs,
+       for (const Multilib &M : getOrderedMultilibs()) {
+         SmallString<128> Dir(SysRoot);
+         llvm::sys::path::append(Dir, M.includeSuffix());
+-        llvm::sys::path::append(Dir, "include");
++        llvm::sys::path::append(Dir, "usr/include");
+         addSystemInclude(DriverArgs, CC1Args, Dir.str());
+       }
+     }
+@@ -288,7 +288,9 @@
+ void BareMetal::addClangTargetOptions(const ArgList &DriverArgs,
+                                       ArgStringList &CC1Args,
+                                       Action::OffloadKind) const {
+-  CC1Args.push_back("-nostdsysteminc");
++  // The newlib/baremetal SDK has header files in the right place, so
++  // remove this.
++  // CC1Args.push_back("-nostdsysteminc");
+ }
+ 
+ void BareMetal::AddClangCXXStdlibIncludeArgs(const ArgList &DriverArgs,

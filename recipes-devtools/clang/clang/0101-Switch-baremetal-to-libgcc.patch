@@ -1,0 +1,34 @@
+From xxx Fri Mar  8 16:21:10 2024
+From: Stuart Menefy <stuart.menefy@codasip.com>
+Date: Fri,  8 Mar 2024 16:21:10 -0000
+Subject: [PATCH] clang: Sitch Switch baremetal to libgcc
+
+Building the compiler-rt and libunwind libraries with clang is causing
+problems at the moment, but we already have libgcc in the build, so
+switch to using that by default.
+
+diff --git a/clang/lib/Driver/ToolChains/BareMetal.h b/clang/lib/Driver/ToolChains/BareMetal.h
+index fc39a2a10e01..59cc5e29b5df 100644
+--- a/clang/lib/Driver/ToolChains/BareMetal.h
++++ b/clang/lib/Driver/ToolChains/BareMetal.h
+@@ -49,7 +49,7 @@ public:
+   StringRef getOSLibName() const override { return "baremetal"; }
+ 
+   RuntimeLibType GetDefaultRuntimeLibType() const override {
+-    return ToolChain::RLT_CompilerRT;
++    return ToolChain::RLT_Libgcc;
+   }
+   CXXStdlibType GetDefaultCXXStdlibType() const override {
+     return ToolChain::CST_Libcxx;
+--- a/clang/lib/Driver/ToolChains/BareMetal.cpp.orig
++++ b/clang/lib/Driver/ToolChains/BareMetal.cpp
+@@ -361,7 +363,8 @@
+     CmdArgs.push_back("-lsupc++");
+     break;
+   }
+-  CmdArgs.push_back("-lunwind");
++  // Using libgcc by default, which appears in include unwind functionality
++  // CmdArgs.push_back("-lunwind");
+ }
+ 
+ void BareMetal::AddLinkRuntimeLib(const ArgList &Args,
