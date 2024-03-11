@@ -65,3 +65,6 @@ BB_SIGNATURE_HANDLER ?= "OEEquivHash"
 BB_HASHSERVE ??= "auto"
 
 MACHINE_FEATURES_BACKFILL_CONSIDERED += "rtc qemu-usermode"
+
+# We only care about RISC-V targets, but we need x86_64 for building
+QEMU_TARGETS ?= "riscv32 riscv64 x86_64"
