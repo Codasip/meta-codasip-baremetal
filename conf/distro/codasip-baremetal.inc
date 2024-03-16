@@ -1,9 +1,9 @@
 DISTRO = "codasip-baremetal"
 DISTRO_NAME = "Codasip Bare Metal Distro"
-DISTRO_VERSION = "1.0"
+DISTRO_VERSION = "1.5"
 TARGET_VENDOR = "-codasip"
 SDK_VENDOR = "-baremetalsdk"
-SDK_VERSION = "R1.0"
+SDK_VERSION = "R1.5"
 
 TCLIBC = "newlib"
 TCLIBCAPPEND =""
