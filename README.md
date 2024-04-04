@@ -2,8 +2,8 @@
 
 This layer is meant to augment Yocto/OE functionality to provide a
 Baremetal/Standalone distribution. It can also be used to build
-FSBL from the baremetal-sdk package require to boot on the Hobgoblin
-FPGA platform.
+FSBL from the baremetal-sdk package, which is required to boot on
+the Hobgoblin FPGA platform.
 
 This layer is derived from the meta-xilinx-standalone layer,
 provided by Xilinx for the same purpose: building a set of tools
